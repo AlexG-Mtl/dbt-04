@@ -1,0 +1,12 @@
+sources:
+  - name: ag7
+    description: Data from Superstore dataset
+    database: SURFALYTICS_DW_AlexG7
+    schema: raw
+    tables:
+      - name: orders
+        description: Raw orders data
+      - name: people
+        description: Raw data for regional managers
+      - name: returns
+        description: Raw data for returned orders
