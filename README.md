@@ -5,22 +5,22 @@ Repos of students with example:
 
 ## Week 1
 
- Using our popular stack, dbt, Azure Postgres, Looker. 
- 
+ Using our popular stack, dbt, Azure Postgres, Looker.
+
  The first exercise:
 
 1. Create new GitHub repo for this project and add `readme.md` file with information about project in it from local IDE using VScode or similar. Don’t forget to create a branch before creating Pull Request. You can check [Module 0](https://surfalytics.com/surfalytics/2023-06-04-Module00.html) for reference or ask help in Discord in `#ask-anything`.
 
 ## Week 2
 
-We will use Superstore dataset. 
+We will use Superstore dataset.
 
 
 During this week we should:
 1. add this into Git, folder `data` and inside put a file or files
 2. ingest data into Azure Postgres (our Data Warehouse)
 
-How to connect Database? 
+How to connect Database?
 1. Open DBeaver: Launch the DBeaver application on your computer.
 2. Create a new connection: Click on the "New Database Connection" button in the toolbar at the top left-side or click on the "Database" menu and select "New Database Connection.
 3. Select PostgreSQL: In the "Connect to a database" dialog, choose "PostgreSQL" from the list of available databases and click "Next."
@@ -45,13 +45,39 @@ Summary:
 
 
 ## Week 3
+run
+1. `python -m venv venvs/dbt_env       # create the virt environment`
 
-1. Setup `dbt core` and create a new project with `dbt init` in the same repository.|
-2. Define `source.yml` or `sources.yml` don't remember and specify the source table
-3. Create the 1st staging models in `models/stg` folder using that is reading the source table and make `config` in the top of model where you can specify `alias`, `strategy` and maybe something else. In the model (SQL) you can add 2 extra columnas: `dwh_id` - this is the unique column, you can use dbt_utils.surrogate_key macro and then you need add column `etl_timestamp` using the macro or just SQL Server column that represents time now.
-3. Define `dev` and `prod` profiles in `profiles.yml` and you should have dev and prod Schema or Database. When you run a `dbt build --select model_name --profile . --target dev` it will create  in your dev schema, and them eith `--prod` it will create in prod schema or database.
+2. `venvs\dbt_env\Scripts\activate`
 
-As a result you will have dbt project with three model in staging that are represents the tables that you've loaded in Week2. We can actually renames schema in week two in `raw` and week 3 is `stg` and week 4 will be `business` or `dw` or anything. In this case it is true layers of data warehouse also known as medalian architecture - bronze/silver/gold. You can read about it.
+3. `python -m pip install dbt-postgres`
+
+4. `dbt --version`
+
+5. `dbt core`
+
+6.  `dbt init`
+
+Add a YAML file named `packages.yml` to dbt project at the same level as your dbt_project.yml file. add to file
+[dbt-utils package](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/)
+
+7. `dbt deps`
+
+8. Define `sources.yml`  specify the source tables
+
+9. Create the 1st staging models in `models/stg` folder using that is reading the source table and make `config` in the top of model where you can specify `alias`, `strategy`
+
+10.  In the model `stg_orders`(SQL)  add 2 extra columnas: `dwh_id` - this is the unique column, you can use dbt_utils.surrogate_key macro and then you need add column `etl_timestamp` using the macro or just SQL Server column that represents time now.
+11. Define `dev` and `prod` profiles in `profiles.yml`
+run `dbt run --target prod`to create same objects in prod
+
+
+As a result you will have dbt project with three model in staging that are represents the tables that you've loaded in Week2.
+
+ We can actually renames schema in week two in `raw` and week 3 is `stg` and week 4 will be `business` or `dw` or anything. In this case it is true layers of data warehouse also known as medalian architecture - bronze/silver/gold.
+
+12. `ALTER SCHEMA stg     RENAME TO "raw";`
+
 
 ## Week 4
 
@@ -76,7 +102,7 @@ Currently our model with initial load should be in `dbt/models/bronze/`
 Let's try to compare `dbt strategy` and `dbt config` https://docs.getdbt.com/docs/build/incremental-strategy
 a) creating view
 b) full table reload
-c) incremental 
+c) incremental
 
 We are using `dbt-postgres` and it supports: `append`, `merge`, `delete+insert` you need to copy same model and try 3 options and document the SQL difference about these 3 appoaches.
 
@@ -86,11 +112,11 @@ We should add GitHub Actions to be able to run `.pre-commit` in CI i.e. when you
 
 Hello, week 5 goals:
 
-You should already has a dbt project and it should have several bronze models. 
+You should already has a dbt project and it should have several bronze models.
 You should be aware about dbt incremental strategies and medalien architecture (just folders layers/structure)
 You should have the basic pre-commit
 
-In week 5 we will continue our dbt journey. 
+In week 5 we will continue our dbt journey.
 
 DBT Specific:
 1. For dbt make sure you have DEV and PROD profile and you can run in Dev and in Prod your model
@@ -160,7 +186,7 @@ repos:
     hooks:
       - id: check-model-has-description
       - id: check-model-has-tests-by-group
-        args: ["--tests", "not_null", "--test-cnt", "1", "--"]        
+        args: ["--tests", "not_null", "--test-cnt", "1", "--"]
       - id: check-model-has-tests-by-group
         args:
           [
@@ -208,8 +234,8 @@ This week we will continue to work on dbt and GitHub.
   - `orders_number`
   - `items_number`
   - and etc. (You can try to use WINDOW functions to calculate more complicated metrics, also you can calcualte `profit`, shipping cost and so on)
- 
-In other, words in gold layer, we aggregated data down to our dimensions and we keep only IDs and metrics and actual dimension values are in Dimension Tables. 
+
+In other, words in gold layer, we aggregated data down to our dimensions and we keep only IDs and metrics and actual dimension values are in Dimension Tables.
 
 We just created a Star Schema with 1 fact table and multiple dimension tables around.
 
@@ -228,15 +254,15 @@ Optionally, you can add more than one fact table.
 
 ## Week 7
 
-By week 7, we should have dbt project in our local IDE and also published in GitHub. The `pre-commit` will make sure code is accurate and running everytime we are creating a commit locally and insied GitHub Actions (Continious Integration). Inside data warehouse we should have DEV and PROD copy of data and models. It means we can do changes safely and test without breaking our production. 
+By week 7, we should have dbt project in our local IDE and also published in GitHub. The `pre-commit` will make sure code is accurate and running everytime we are creating a commit locally and insied GitHub Actions (Continious Integration). Inside data warehouse we should have DEV and PROD copy of data and models. It means we can do changes safely and test without breaking our production.
 
 For our local dbt setup, I want to add couple more useful things:
 1. Adding nice dbt feature [deffer](https://docs.getdbt.com/reference/node-selection/defer). Example of command run:
 
 ```bash
-dbt run --target dev --defer --state ./prod_artifacts/ --select fact_mrr_time_series   
+dbt run --target dev --defer --state ./prod_artifacts/ --select fact_mrr_time_series
 ```
-This command has `--target dev` i.e. will run against DEV, and I want to run fact table. If I have dependenices for this model dbt will look up them and failed, if I don't have table in DEV scehma. `--defer` will help dbt to lookup the PROD tables instead and we don't need to build the whole DEV jsut for us. Save money, storage and time! 
+This command has `--target dev` i.e. will run against DEV, and I want to run fact table. If I have dependenices for this model dbt will look up them and failed, if I don't have table in DEV scehma. `--defer` will help dbt to lookup the PROD tables instead and we don't need to build the whole DEV jsut for us. Save money, storage and time!
 
 How dbt will know about proper tables names and schemas? Using this part `--state ./prod_artifacts/`. I've created the folder `prod_artifacts` and drop the dbt artfifacts into the folder. I am using these commands:
 
@@ -275,7 +301,7 @@ INSERT INTO <YOUR TABLE> (
 );
 ```
 
-It means, that both `Xerox 1999` and `Xerox v2`. For SCD 1, we would overwrite just in DIM PRODUCTS, but we want SCD 2, you and you need kep both versions with couple extra columns. Depens on sales date, it will be one of them in reporting. 
+It means, that both `Xerox 1999` and `Xerox v2`. For SCD 1, we would overwrite just in DIM PRODUCTS, but we want SCD 2, you and you need kep both versions with couple extra columns. Depens on sales date, it will be one of them in reporting.
 
 Update the PRODUCT DIM to make sure it is SCD 2. (PS remember this is one of the most popular interview question!)
 
@@ -292,9 +318,9 @@ Next week, we should start think, how to put dbt into container and host somewhe
 
 ## Week 8
 
-Last week we focused on creating Physical Model and Looker BI. 
+Last week we focused on creating Physical Model and Looker BI.
 
-Let's now think about production use case for dbt. Obviosly, we can just install dbt to remote machine. It will be expensive in case of remote virtual machine that is running 24/7. Moreover, in case of failure, our ETL will be down. That's why dbt usually are hosting in containers. 
+Let's now think about production use case for dbt. Obviosly, we can just install dbt to remote machine. It will be expensive in case of remote virtual machine that is running 24/7. Moreover, in case of failure, our ETL will be down. That's why dbt usually are hosting in containers.
 
 You should be already aware what is container from Module 0 - [Just Enough Docker](https://www.youtube.com/watch?v=MCY9Jw_Sa4g).
 
@@ -306,7 +332,7 @@ $ docker pull ghcr.io/dbt-labs/dbt-postgres:1.8.2
 
 Our goal is to make sure we can run a container on local machine with dbt inside and let us use this container for executing dbt commands against our Postgres Data Warehouse.
 
-When you succeed with this you can move towards next step of Continious Integration (CI). We already should have simple `pre-commit` that is running with every Pull Request to help avoid silly mistakes in code and code formating either SQL or Python. 
+When you succeed with this you can move towards next step of Continious Integration (CI). We already should have simple `pre-commit` that is running with every Pull Request to help avoid silly mistakes in code and code formating either SQL or Python.
 
 Now, we want to move to the next level of testing - test our dbt models against real data. In other words, we will use GitHub Actions to spin up container and execute dbt models against `CI` schema, run models, run tests and shutdown. This is why we need CI.
 
@@ -340,7 +366,7 @@ jobs:
     - name: Copy manifest.json prod artifacts
       run: |
         <command>
-    
+
 
     - name: Run dbt debug
       run: |
@@ -353,7 +379,7 @@ jobs:
     - name: Run dbt build
       run: |
         if [ -f "./manifest.json" ]; then
-          dbt build -s 'state:modified+' --defer --state ./ --target pr 
+          dbt build -s 'state:modified+' --defer --state ./ --target pr
         else
           dbt build --target pr
         fi
