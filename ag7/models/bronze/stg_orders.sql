@@ -1,19 +1,10 @@
-{{
-  config(
-    materialized='view',
-    unique_key='dwh_id',
-    alias='stg_orders'
-  )
-}}
+{{ config(materialized="view", unique_key="dwh_id", alias="stg_orders") }}
 
-with source as (
-    select * from {{ source('ag7', 'orders') }}
-)
+with source as (select * from {{ source("ag7", "orders") }})
 
 select
-    {{ dbt_utils.generate_surrogate_key(
-        ['order_id', 'customer_id', 'product_id']
-    ) }} as dwh_id,
+    {{ dbt_utils.generate_surrogate_key(["order_id", "customer_id", "product_id"]) }}
+    as dwh_id,
     row_id,
     order_id,
     order_date,

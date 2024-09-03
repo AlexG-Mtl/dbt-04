@@ -1,0 +1,19 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+      - id: check-yaml
+
+
+
+  - repo: https://github.com/tconbeer/sqlfmt
+    rev: v0.23.2
+    hooks:
+      - id: sqlfmt
+        name: SQL formatter
+        language_version: python
+        additional_dependencies: [".[jinjafmt]"]
+
+
+
