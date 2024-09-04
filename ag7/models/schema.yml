@@ -1,0 +1,9 @@
+version: 2
+
+models:
+  - name: mart_orders
+    description: This table has basic information about orders, as well as some derived facts based on payments
+
+    columns:
+      - name: ship_mode
+        description: '{{ doc("orders_ship_mode") }}'

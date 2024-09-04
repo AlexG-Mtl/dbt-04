@@ -1,3 +1,5 @@
+version: 2
+
 sources:
   - name: ag7
     description: Data from Superstore dataset
@@ -6,7 +8,24 @@ sources:
     tables:
       - name: orders
         description: Raw orders data
+        columns:
+          - name: order_id
+            tests:
+              - not_null
+
       - name: people
         description: Raw data for regional managers
       - name: returns
         description: Raw data for returned orders
+
+  - name: stg
+    description: Staging tables for the project
+    database: SURFALYTICS_DW_AlexG7
+    schema: stg
+    tables:
+      - name: dummy_orders_fresh
+        description: Fresh dummy orders data for testing
+        loaded_at_field: order_date_timestamp
+        freshness:
+          warn_after: {count: 1, period: day}
+          error_after: {count: 2, period: day}

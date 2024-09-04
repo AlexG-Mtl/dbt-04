@@ -108,6 +108,28 @@ We are using `dbt-postgres` and it supports: `append`, `merge`, `delete+insert` 
 
 We should add GitHub Actions to be able to run `.pre-commit` in CI i.e. when you create a PR, it will test the files.
 
+1. `pip install pre-commit`
+
+2.  Create a .pre-commit-config.yaml file in root of project
+
+3. run in root of project `pre-commit install
+
+4. run `pre-commit run --all-files`
+5. in case of errors\updates in file `.pre-commit-config.yaml` run `pre-commit autoupdate`
+6. `git add .`
+7. `git commit -m "Apply pre-commit fixes and finalize changes for week 4"`
+8. `git push origin week4`
+9. Create a Pull Request (PR) on GitHub:
+10. Merge the Pull Request:
+11. Merge the Pull Request:
+12. Merge the Pull Request:
+  (Switch to the main branch first and run  `git checkout main`
+
+13. `git branch -d week4`
+14. `git pull origin main`
+15. `git checkout -b week5`
+
+
 ## Week 5
 
 Hello, week 5 goals:
@@ -209,6 +231,27 @@ repos:
 ```
 
 > Note: you need to use your dbt versions in pre-commit config.
+
+## Week 5 commands
+1.`dbt source freshness` - will check on stg.dummy_orders_fresh;
+
+2.`dbt test` based on soures.yml (not null)
+
+3.`dbt --version` we need 1.8+
+
+Unit testing generate errors
+
+Add meta and docs.md
+1. `dbt docs generate`
+2. `dbt docs serve`
+
+Summary of Differences of dbt  commands
+
+![Summary of Differences](/images/Summary_of_Differences_of_dbt_command.jpg)
+
+add tags for models and to `dbt_project`
+
+
 
 ## Week 6
 
