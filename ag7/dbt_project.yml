@@ -1,4 +1,3 @@
-
 # Name your project! Project names should contain only lowercase characters
 # and underscores. A good package name should reflect your organization's
 # name or the intended use of these models
@@ -31,11 +30,25 @@ clean-targets:         # directories to be removed by `dbt clean`
 # files using the `{{ config(...) }}` macro.
 models:
   ag7:
-    #stg:# This is the folder where your staging models are located
-    #+schema: stg  # Set the schema to 'stg' for all models in this folder
+    +meta:
+      owner: 'alex '
+      favorite_color: 'blue'  # Default color for the project
+      maturity: 'low'  # Default maturity level for the project
 
-    # Config indicated by + and applies to all files under models/example/
-  #  example:
-  #    +materialized: view
+    bronze:  # Define meta properties specific to bronze models
+      +meta:
+        owner: 'alex 01'
+        favorite_color: 'green'  # Color for bronze models
+        maturity: 'low'  # Maturity level for bronze models
+
+    silver:      # Define meta properties specific to silver models
+      +tags:
+        - "when_needed"
+      +meta:
+        owner: 'alex 02'
+        favorite_color: 'yellow'  # Color for silver models
+        maturity: 'medium'  # Maturity level for silver models
+
+
 vars:
   should_delete: true  # Set this to 'false' to disable deletion
