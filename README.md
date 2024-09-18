@@ -251,9 +251,16 @@ Summary of Differences of dbt  commands
 
 add tags for models and to `dbt_project`
 
+add `pull_request_template.md`
 
 
 ## Week 6
+
+1. `pip install pandas`
+2. `python C:\LAB\Surf_202409\dbt-04\python_code\create_calendar.py`
+3. `dbt seed --select calendar`
+4. `dbt deps` -- run after adding packages
+
 
 This week we will continue to work on dbt and GitHub.
 
