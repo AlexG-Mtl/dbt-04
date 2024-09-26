@@ -31,8 +31,9 @@ jobs:
           DBT_HOST: ${{ secrets.DBT_HOST }}
           DBT_USER: ${{ secrets.DBT_USER }}
           DBT_PASSWORD: ${{ secrets.DBT_PASSWORD }}
+        working-directory: ./ag7  # Pointing to ag7 directory where dbt_project.yml is located
         run: |
-          dbt debug --profiles-dir ./ag7/ci_files
+          dbt debug --profiles-dir ./ci_files
 
       # Step 5: Install dbt project dependencies with secrets passed
       - name: Run dbt deps
@@ -40,8 +41,9 @@ jobs:
           DBT_HOST: ${{ secrets.DBT_HOST }}
           DBT_USER: ${{ secrets.DBT_USER }}
           DBT_PASSWORD: ${{ secrets.DBT_PASSWORD }}
+        working-directory: ./ag7  # Pointing to ag7 directory
         run: |
-          dbt deps --profiles-dir ./ag7/ci_files
+          dbt deps --profiles-dir ./ci_files
 
       # Step 6: Run dbt build with secrets passed
       - name: Run dbt build
@@ -49,11 +51,12 @@ jobs:
           DBT_HOST: ${{ secrets.DBT_HOST }}
           DBT_USER: ${{ secrets.DBT_USER }}
           DBT_PASSWORD: ${{ secrets.DBT_PASSWORD }}
+        working-directory: ./ag7  # Pointing to ag7 directory
         run: |
           if [ -f "./manifest.json" ]; then
-            dbt build -s 'state:modified+' --defer --state ./ --profiles-dir ./ag7/ci_files
+            dbt build -s 'state:modified+' --defer --state ./ --profiles-dir ./ci_files
           else
-            dbt build --profiles-dir ./ag7/ci_files
+            dbt build --profiles-dir ./ci_files
           fi
 
       # (Optional) Step 7: Drop CI schema to clean up after the run with secrets passed
@@ -62,5 +65,6 @@ jobs:
           DBT_HOST: ${{ secrets.DBT_HOST }}
           DBT_USER: ${{ secrets.DBT_USER }}
           DBT_PASSWORD: ${{ secrets.DBT_PASSWORD }}
+        working-directory: ./ag7  # Pointing to ag7 directory
         run: |
-          dbt run-operation drop_schema --args "{schema: ci_schema}" --profiles-dir ./ag7/ci_files
+          dbt run-operation drop_schema --args "{schema: ci_schema}" --profiles-dir ./ci_files
