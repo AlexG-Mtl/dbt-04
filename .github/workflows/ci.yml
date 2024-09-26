@@ -14,7 +14,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Step 2: Set up Python (required for dbt)
+      # Step 2: Set up Python (required for dbt 01)
       - name: Set up Python 3.9
         uses: actions/setup-python@v2
         with:
@@ -33,6 +33,7 @@ jobs:
           DBT_HOST: ${{ secrets.DBT_HOST }}
           DBT_USER: ${{ secrets.DBT_USER }}
           DBT_PASSWORD: ${{ secrets.DBT_PASSWORD }}
+        run: echo "Environment variables set"
 
       # Step 5: Run dbt debug to check the environment
       - name: Run dbt debug
