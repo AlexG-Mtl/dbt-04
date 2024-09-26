@@ -67,4 +67,4 @@ jobs:
           DBT_PASSWORD: ${{ secrets.DBT_PASSWORD }}
         working-directory: ./ag7
         run: |
-          dbt run-operation drop_schema --args '{"schema_name": "ci_schema"}' --profiles-dir ./ci_files --target ci
+          dbt run-operation drop_schema_str --args "{'schema': 'ci_schema'}" --profiles-dir ./ci_files --target ci
