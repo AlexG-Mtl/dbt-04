@@ -25,27 +25,30 @@ jobs:
         run: |
           pip install dbt-postgres
 
-      # Step 4: Set environment variables using GitHub Secrets
-      - name: Set DBT environment variables
+      # Step 4: Run dbt debug to check the environment with secrets passed
+      - name: Run dbt debug
         env:
           DBT_HOST: ${{ secrets.DBT_HOST }}
           DBT_USER: ${{ secrets.DBT_USER }}
           DBT_PASSWORD: ${{ secrets.DBT_PASSWORD }}
-        run: echo "Environment variables set"
-
-      # Step 5: Run dbt debug to check the environment
-      - name: Run dbt debug
         run: |
-          which dbt  # This will check if dbt is installed
           dbt debug --profiles-dir ./ag7/ci_files
 
-      # Step 6: Install dbt project dependencies
+      # Step 5: Install dbt project dependencies with secrets passed
       - name: Run dbt deps
+        env:
+          DBT_HOST: ${{ secrets.DBT_HOST }}
+          DBT_USER: ${{ secrets.DBT_USER }}
+          DBT_PASSWORD: ${{ secrets.DBT_PASSWORD }}
         run: |
           dbt deps --profiles-dir ./ag7/ci_files
 
-      # Step 7: Run dbt build with the 'state:modified+' method
+      # Step 6: Run dbt build with secrets passed
       - name: Run dbt build
+        env:
+          DBT_HOST: ${{ secrets.DBT_HOST }}
+          DBT_USER: ${{ secrets.DBT_USER }}
+          DBT_PASSWORD: ${{ secrets.DBT_PASSWORD }}
         run: |
           if [ -f "./manifest.json" ]; then
             dbt build -s 'state:modified+' --defer --state ./ --profiles-dir ./ag7/ci_files
@@ -53,7 +56,11 @@ jobs:
             dbt build --profiles-dir ./ag7/ci_files
           fi
 
-      # (Optional) Step 8: Drop CI schema to clean up after the run
+      # (Optional) Step 7: Drop CI schema to clean up after the run with secrets passed
       - name: Drop CI schema
+        env:
+          DBT_HOST: ${{ secrets.DBT_HOST }}
+          DBT_USER: ${{ secrets.DBT_USER }}
+          DBT_PASSWORD: ${{ secrets.DBT_PASSWORD }}
         run: |
           dbt run-operation drop_schema --args "{schema: ci_schema}" --profiles-dir ./ag7/ci_files
