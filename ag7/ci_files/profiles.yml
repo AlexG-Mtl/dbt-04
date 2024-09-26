@@ -9,6 +9,7 @@ ag7:
       dbname: SURFALYTICS_DW_AlexG7
       schema: stg
       threads: 1
+
     prod:
       type: postgres
       host: "{{ env_var('DBT_HOST') }}"
@@ -18,4 +19,16 @@ ag7:
       dbname: SURFALYTICS_DW_AlexG7
       schema: prod
       threads: 1
-  target: dev
+
+    ci:
+      type: postgres
+      host: "{{ env_var('DBT_HOST') }}"
+      user: "{{ env_var('DBT_USER') }}"
+      pass: "{{ env_var('DBT_PASSWORD') }}"
+      port: 5432
+      dbname: SURFALYTICS_DW_AlexG7
+      schema: ci_schema  # A separate schema for CI tests
+      threads: 1
+
+  target: dev  # Use dev by default, but CI will use the `ci` target
+
