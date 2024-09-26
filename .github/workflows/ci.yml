@@ -1,0 +1,60 @@
+name: dbt CI
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  CI_job:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code from the repository
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Step 2: Set up Python (required for dbt)
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      # Step 3: Install dbt
+      - name: Install dbt
+        run: |
+          python -m venv env
+          source env/bin/activate
+          pip install dbt-postgres
+
+      # Step 4: Set environment variables using GitHub Secrets
+      - name: Set DBT environment variables
+        env:
+          DBT_HOST: ${{ secrets.DBT_HOST }}
+          DBT_USER: ${{ secrets.DBT_USER }}
+          DBT_PASSWORD: ${{ secrets.DBT_PASSWORD }}
+
+      # Step 5: Run dbt debug to check the environment
+      - name: Run dbt debug
+        run: |
+          dbt debug --profiles-dir ./ag7/ci_files
+
+      # Step 6: Install dbt project dependencies
+      - name: Run dbt deps
+        run: |
+          dbt deps --profiles-dir ./ag7/ci_files
+
+      # Step 7: Run dbt build with the 'state:modified+' method
+      - name: Run dbt build
+        run: |
+          if [ -f "./manifest.json" ]; then
+            dbt build -s 'state:modified+' --defer --state ./ --profiles-dir ./ag7/ci_files
+          else
+            dbt build --profiles-dir ./ag7/ci_files
+          fi
+
+      # (Optional) Step 8: Drop CI schema to clean up after the run
+      - name: Drop CI schema
+        run: |
+          dbt run-operation drop_schema --args "{schema: ci_schema}" --profiles-dir ./ag7/ci_files
+
