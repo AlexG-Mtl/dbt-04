@@ -262,6 +262,11 @@ add `pull_request_template.md`
 4. `dbt deps` -- run after adding packages
 
 
+## Week 8
+docker run --rm -it -v C:/Users/ebook/.dbt/profiles.yml:/root/.dbt/profiles.yml -v C:/LAB/Surf_202409/dbt-04/ag7:/usr/app -w /usr/app ghcr.io/dbt-labs/dbt-postgres:1.8.2 run --profiles-dir /root/.dbt
+
+
+
 This week we will continue to work on dbt and GitHub.
 
 1. We would like to add a dbt seed (CSV file) that will create for us a `calendar` table. You can check any kind of CSV file that has calendar. Idea is to learn about [what is seed](https://docs.getdbt.com/docs/build/seeds).

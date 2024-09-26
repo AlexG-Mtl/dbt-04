@@ -1,0 +1,21 @@
+ag7:
+  outputs:
+    dev:
+      type: postgres
+      host: "{{ env_var('DBT_HOST') }}"
+      user: "{{ env_var('DBT_USER') }}"
+      pass: "{{ env_var('DBT_PASSWORD') }}"
+      port: 5432
+      dbname: SURFALYTICS_DW_AlexG7
+      schema: stg
+      threads: 1
+    prod:
+      type: postgres
+      host: "{{ env_var('DBT_HOST') }}"
+      user: "{{ env_var('DBT_USER') }}"
+      pass: "{{ env_var('DBT_PASSWORD') }}"
+      port: 5432
+      dbname: SURFALYTICS_DW_AlexG7
+      schema: prod
+      threads: 1
+  target: dev
