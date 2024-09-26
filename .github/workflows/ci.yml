@@ -33,6 +33,7 @@ jobs:
           DBT_HOST: ${{ secrets.DBT_HOST }}
           DBT_USER: ${{ secrets.DBT_USER }}
           DBT_PASSWORD: ${{ secrets.DBT_PASSWORD }}
+        run: echo "Environment variables set"
 
       # Step 5: Run dbt debug to check the environment
       - name: Run dbt debug
