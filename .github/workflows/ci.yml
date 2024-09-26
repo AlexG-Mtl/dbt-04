@@ -14,17 +14,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Step 2: Set up Python (required for dbt 01)
+      # Step 2: Set up Python (required for dbt)
       - name: Set up Python 3.9
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
 
-      # Step 3: Install dbt
+      # Step 3: Install dbt globally
       - name: Install dbt
         run: |
-          python -m venv env
-          source env/bin/activate
           pip install dbt-postgres
 
       # Step 4: Set environment variables using GitHub Secrets
@@ -38,6 +36,7 @@ jobs:
       # Step 5: Run dbt debug to check the environment
       - name: Run dbt debug
         run: |
+          which dbt  # This will check if dbt is installed
           dbt debug --profiles-dir ./ag7/ci_files
 
       # Step 6: Install dbt project dependencies
@@ -58,4 +57,3 @@ jobs:
       - name: Drop CI schema
         run: |
           dbt run-operation drop_schema --args "{schema: ci_schema}" --profiles-dir ./ag7/ci_files
-
